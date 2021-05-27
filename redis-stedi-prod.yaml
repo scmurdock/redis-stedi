@@ -42,8 +42,13 @@ spec:
           volumeMounts:
             - name: redis-prod-volume
               mountPath: /data
-      volumes:
-        - name: redis-prod-volume
-          gcePersistentDisk:
-            pdName: redis-prod
-            fsType: ext4
+  volumeClaimTemplates:
+  - metadata:
+      name: redis-prod-volume
+    spec:
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: 10Gi
+
