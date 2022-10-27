@@ -18,7 +18,7 @@ spec:
   selector:
     matchLabels:
       app: redis-stedi-dev  # has to match .spec.template.metadata.labels
-  serviceName: easy-rent-dev-redis
+  serviceName: redis-stedi-dev
   replicas: 1
   template:
     metadata:
