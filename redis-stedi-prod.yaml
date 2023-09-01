@@ -33,6 +33,13 @@ spec:
           ports:
             - containerPort: 6379
               name: redis
+          resources:
+            limits:
+              cpu: ".25"
+              memory: "500Mi"
+            requests:
+              cpu: ".125"
+              memory: ".0625Mi"              
           env:
           - name: REDIS_PASS
             valueFrom:
