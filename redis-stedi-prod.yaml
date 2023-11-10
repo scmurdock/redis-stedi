@@ -18,7 +18,7 @@ spec:
   selector:
     matchLabels:
       app: redis-stedi-prod  # has to match .spec.template.metadata.labels
-  serviceName: easy-rent-prod-redis
+  serviceName: redis-stedi-prod
   replicas: 1
   template:
     metadata:
@@ -26,10 +26,10 @@ spec:
         app: redis-stedi-prod  # has to match .spec.selector.matchLabels
     spec:
       containers:
-        - name: easy-rent-prod-redis
-          image: redis:3.2-alpine
+        - name: redis-stedi-prod
+          image: redis/redis-stack-server:latest
           imagePullPolicy: Always
-          args: ["--requirepass", "$(REDIS_PASS)", "--appendonly", "yes", "--save", "900", "1", "--save", "30", "2"]
+          #args: ["--requirepass", "$(REDIS_PASS)", "--appendonly", "yes", "--save", "900", "1", "--save", "30", "2"]
           ports:
             - containerPort: 6379
               name: redis
@@ -39,13 +39,15 @@ spec:
               memory: "500Mi"
             requests:
               cpu: ".125"
-              memory: ".0625Mi"              
+              memory: ".0625Mi"
           env:
           - name: REDIS_PASS
             valueFrom:
               secretKeyRef:
                 name: redis-secrets-prod
                 key: REDIS_PASS
+          - name: REDIS_ARGS
+            value: "--requirepass $(REDIS_PASS) --appendonly yes --save 900 1 --save 30 2"
           volumeMounts:
             - name: redis-prod-volume
               mountPath: /data
