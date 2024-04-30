@@ -60,4 +60,19 @@ spec:
       resources:
         requests:
           storage: 10Gi
-
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis-stedi-dev-lb
+  annotations:
+    cloud.google.com/load-balancer-type: "External"  
+  labels:
+    app: redis-stedi-dev
+spec:
+  ports:
+  - port: 6379
+    name: redis-stedi-dev-lb
+  selector:
+    app: redis-stedi-dev
+  type: LoadBalancer   
